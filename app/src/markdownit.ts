@@ -11,6 +11,9 @@ import { default as MarkdownItFootnote } from 'https://esm.sh/markdown-it-footno
 import { default as MarkdownItTaskLists } from 'https://esm.sh/markdown-it-task-lists@2.1.1?no-dts';
 // @deno-types="./markdownit_plugin.d.ts"
 import { default as MarkdownItTexmath } from 'https://esm.sh/markdown-it-texmath@1.0.0?no-dts';
+// @deno-types="./markdownit_plugin.d.ts"
+import { default as MarkdownItWikiLinks } from 'https://esm.sh/markdown-it-wikilinks@1.3.0?no-dts';
+
 import Katex from 'https://esm.sh/katex@0.16.3?no-dts';
 
 const __args = parse(Deno.args);
@@ -20,20 +23,24 @@ const md = new MarkdownIt('default', {
   typographer: true,
   linkify: true,
   langPrefix: 'language-',
-  highlight: __args['syntax'] && ((code, language) => {
-    if (language && highlight.getLanguage(language)) {
-      try {
-        return highlight.highlight(code, { language }).value;
-      } catch {
-        return code;
+  highlight:
+    __args['syntax'] &&
+    ((code, language) => {
+      if (language && highlight.getLanguage(language)) {
+        try {
+          return highlight.highlight(code, { language }).value;
+        } catch {
+          return code;
+        }
       }
-    }
 
-    return '';
-  }),
-}).use(MarkdownItEmoji)
+      return '';
+    }),
+})
+  .use(MarkdownItEmoji)
   .use(MarkdownItFootnote)
   .use(MarkdownItTaskLists, { enabled: false, label: true })
+  .use(MarkdownItWikiLinks)
   .use(MarkdownItTexmath, {
     engine: Katex,
     delimiters: ['dollars', 'gitlab'],
