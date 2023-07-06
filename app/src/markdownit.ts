@@ -12,7 +12,7 @@ import { default as MarkdownItTaskLists } from 'https://esm.sh/markdown-it-task-
 // @deno-types="./markdownit_plugin.d.ts"
 import { default as MarkdownItTexmath } from 'https://esm.sh/markdown-it-texmath@1.0.0?no-dts';
 // @deno-types="./markdownit_plugin.d.ts"
-import { default as MarkdownItWikiLinks } from 'https://esm.sh/markdown-it-wikilinks@1.3.0?no-dts';
+import { default as MarkdownItWikiLinks } from 'https://cdn.skypack.dev/markdown-it-wikilinks@v1.3.0?dts';
 
 import Katex from 'https://esm.sh/katex@0.16.3?no-dts';
 
