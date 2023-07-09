@@ -1,16 +1,27 @@
-# peek.nvim
+# gander.nvim
 
-*Markdown preview plugin for [Neovim](https://github.com/neovim/neovim)*
+---
 
-![preview](media/peek.jpg)
+## Word: **Gander**
+
+1. **Noun**
+   - (literal meaning) A male goose.
+   - (slang) A quick look. Used in the phrase "take a gander".
+2. **Verb**
+   - (informal) To look or glance at something.
+
+---
+
+A [neovim](https://github.com/neovim/neovim) extension for viewing markdown with a focus on knowledgebases/note-taking.  
+A hard fork & heavy refactor of [peek.nvim](github.com/toppair/peek.nvim). You should probably use that instead.
 
 ### :sparkles: Features
 
 - live update
 - synchronized scrolling
 - github-style look
-- [TeX](https://github.com/KaTeX/KaTeX) math
-- [Mermaid](https://github.com/mermaid-js/mermaid) diagrams
+- No build step
+- _Math & Mermaid coming soon_
 
 ### :battery: Requirements
 
@@ -19,7 +30,7 @@
 ### :electric_plug: Installation
 
 ```lua
-use({ 'toppair/peek.nvim', run = 'deno task --quiet build:fast' })
+use({ 'jakehl/gander.nvim' })
 ```
 
 ### :wrench: Configuration
@@ -37,9 +48,6 @@ require('peek').setup({
 
   update_on_change = true,
 
-  app = 'webview',          -- 'webview', 'browser', string or a table of strings
-                            -- explained below
-
   filetype = { 'markdown' },-- list of filetypes to recognize as markdown
 
   -- relevant if update_on_change is true
@@ -50,25 +58,13 @@ require('peek').setup({
 })
 ```
 
-### :paperclip: `app` option
-
-Preview opens in a [webview](https://github.com/webview/webview_deno) window by default.
-You can set this option to `'browser'` (will use your default browser as previewer) or
-specify browser along with arguments:
-
-`app = 'chromium'`
-
-`app = { 'chromium', '--new-window' }`
-
-[Chromium based browser](https://en.wikipedia.org/wiki/Chromium_(web_browser)#Browsers_based_on_Chromium) is recommended.
-
 ### :bulb: Usage
 
-| method ||
-|-|-|
-| open    | Open preview window                                 |
-| close   | Close preview window                                |
-| is_open | Returns `true` if preview window is currently open  |
+| method  |                                                    |
+| ------- | -------------------------------------------------- |
+| open    | Open preview window                                |
+| close   | Close preview window                               |
+| is_open | Returns `true` if preview window is currently open |
 
 Example command setup:
 
@@ -79,14 +75,14 @@ vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
 
 The following keybinds are active when preview window is focused:
 
-| key ||
-|-|-|
-| k | scroll up               |
-| j | scroll down             |
-| u | scroll up half a page   |
-| d | scroll down half a page |
-| g | scroll to top           |
-| G | scroll to bottom        |
+| key |                         |
+| --- | ----------------------- |
+| k   | scroll up               |
+| j   | scroll down             |
+| u   | scroll up half a page   |
+| d   | scroll down half a page |
+| g   | scroll to top           |
+| G   | scroll to bottom        |
 
 ### :mag: Preview window
 
