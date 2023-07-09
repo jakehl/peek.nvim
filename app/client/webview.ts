@@ -1,9 +1,12 @@
 import { Webview } from 'https://deno.land/x/webview@0.7.4/mod.ts';
-import { parse } from 'https://deno.land/std@0.159.0/flags/mod.ts';
+import { generatePage } from './generatePage.ts';
 
-const { url, theme, serverUrl } = parse(Deno.args);
+const theme = Deno.env.get('theme') ?? '';
+const serverUrl = Deno.env.get('serverUrl') ?? '';
 
 const webview = new Webview();
+
+console.log('its comingggggg');
 
 webview.title = 'Peek preview';
 webview.bind('_log', console.log);
@@ -13,7 +16,7 @@ webview.init(`
   window.peek.serverUrl = "${serverUrl}"
 `);
 
-webview.navigate(url);
+webview.navigate(await generatePage());
 webview.run();
 
 Deno.exit();

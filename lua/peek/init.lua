@@ -23,8 +23,11 @@ local function open(bufnr)
   app.init(function()
     augroup = nvim_del_augroup_by_id(augroup)
   end)
-  app.base(vim.fn.fnamemodify(vim.uri_to_fname(vim.uri_from_bufnr(bufnr)), ':p:h'))
   app.show(get_buf_content(bufnr))
+  -- local current = line('.')
+  -- local total = line('$')
+  -- local percentage = current / total * 100
+  -- app.scroll(percentage)
   app.scroll(line('.'))
 
   local show_throttled = throttle(function(content)
@@ -57,6 +60,13 @@ local function open(bufnr)
     group = augroup,
     buffer = bufnr,
     callback = function()
+      -- local total = line('$')
+      -- local wHeight = vim.api.nvim_win_get_height(0)
+      -- local top = line('w0')
+      -- local midLine = top + ((wHeight - 1) / 2)
+
+      -- local percentage = midLine / total * 100
+      -- app.scroll(percentage)
       app.scroll(line('.'))
     end,
   })

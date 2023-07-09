@@ -11,8 +11,8 @@ import { default as MarkdownItFootnote } from 'https://esm.sh/markdown-it-footno
 import { default as MarkdownItTaskLists } from 'https://esm.sh/markdown-it-task-lists@2.1.1?no-dts';
 // @deno-types="./markdownit_plugin.d.ts"
 import { default as MarkdownItTexmath } from 'https://esm.sh/markdown-it-texmath@1.0.0?no-dts';
-// @deno-types="./markdownit_plugin.d.ts"
-import { default as MarkdownItWikiLinks } from 'https://cdn.skypack.dev/markdown-it-wikilinks@v1.3.0?dts';
+
+import { MarkdownItWikiLink } from './markdown-wikilinks.ts';
 
 import Katex from 'https://esm.sh/katex@0.16.3?no-dts';
 
@@ -40,12 +40,20 @@ const md = new MarkdownIt('default', {
   .use(MarkdownItEmoji)
   .use(MarkdownItFootnote)
   .use(MarkdownItTaskLists, { enabled: false, label: true })
-  .use(MarkdownItWikiLinks)
+  .use(MarkdownItWikiLink)
   .use(MarkdownItTexmath, {
     engine: Katex,
     delimiters: ['dollars', 'gitlab'],
     katexOptions: { macros: { '\\R': '\\mathbb{R}' } },
   });
+
+md.core.ruler.push('line_numbers', (state) => {
+  for (const t of state.tokens) {
+    if (t.type.endsWith('_open') && t.map) {
+      t.attrSet('data-line', String(t.map[0]) + 1);
+    }
+  }
+});
 
 md.renderer.rules.link_open = (tokens, idx, options) => {
   const token = tokens[idx];
@@ -139,7 +147,22 @@ export function render(markdown: string) {
   const tokens = md.parse(markdown, {});
 
   tokens.forEach((token) => {
-    if (token.map && token.level === 0) {
+    const visibleTags = [
+      'p',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'li',
+      'a',
+      'img',
+      'image',
+      'svg',
+      'pre',
+    ];
+    if (token.map && visibleTags.includes(token.tag)) {
       token.attrSet('data-line-begin', String(token.map[0] + 1));
     }
   });
